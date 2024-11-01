@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Stock;
 use App\Models\Producto;
 use App\Models\Almacen;
+use App\Models\InventarioAlmacenes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -47,23 +47,30 @@ class StockController extends Controller
                 'producto_id' => 'required|exists:productos,id',
                 'tipo' => 'required|in:entrada,salida',
                 'cantidad' => 'required|integer|min:1',
-                'almacen_id' => 'required|exists:almacenes,id',
+                'almacen_id' => 'required|exists:almacens,id',
             ]);
 
             $producto = Producto::findOrFail($request->producto_id);
             $almacen = Almacen::findOrFail($request->almacen_id);
 
             // Verificar el stock suficiente en el almacén específico
-            if ($request->tipo === 'salida') {
-                $stockActual = Stock::where('producto_id', $producto->id)
-                    ->where('almacen_id', $almacen->id)
-                    ->sum('cantidad');
+            $inventario = InventarioAlmacenes::firstOrNew([
+                'producto_id' => $producto->id,
+                'almacen_id' => $almacen->id
+            ]);
 
-                if ($stockActual < $request->cantidad) {
+            if ($request->tipo === 'salida') {
+                if ($inventario->cantidad < $request->cantidad) {
                     DB::rollBack();
                     return back()->withErrors(['error' => 'Stock insuficiente en este almacén para realizar esta salida.']);
                 }
+                $inventario->cantidad -= $request->cantidad;
+            } else {
+                $inventario->cantidad += $request->cantidad;
             }
+
+            // Guardar el inventario actualizado del almacén
+            $inventario->save();
 
             // Crear el movimiento de stock
             Stock::create([
@@ -93,27 +100,37 @@ class StockController extends Controller
                 'producto_id' => 'required|exists:productos,id',
                 'tipo' => 'required|in:entrada,salida',
                 'cantidad' => 'required|integer|min:1',
-                'almacen_id' => 'required|exists:almacenes,id',
+                'almacen_id' => 'required|exists:almacens,id',
             ]);
 
             $stock = Stock::findOrFail($id);
             $producto = Producto::findOrFail($request->producto_id);
             $almacen = Almacen::findOrFail($request->almacen_id);
 
-            // Revertir el cambio anterior en cantidad
-            $producto->cantidad -= $stock->tipo === 'entrada' ? $stock->cantidad : -$stock->cantidad;
+            // Revertir el cambio anterior en cantidad del inventario específico
+            $inventario = InventarioAlmacenes::where('producto_id', $producto->id)
+                ->where('almacen_id', $almacen->id)
+                ->firstOrFail();
+
+            if ($stock->tipo === 'entrada') {
+                $inventario->cantidad -= $stock->cantidad;
+            } else {
+                $inventario->cantidad += $stock->cantidad;
+            }
 
             // Validar el stock en el almacén seleccionado
-            if ($request->tipo === 'salida') {
-                $stockActual = Stock::where('producto_id', $producto->id)
-                    ->where('almacen_id', $almacen->id)
-                    ->sum('cantidad');
-
-                if ($stockActual < $request->cantidad) {
-                    DB::rollBack();
-                    return back()->withErrors(['error' => 'Stock insuficiente en este almacén para realizar esta salida.']);
-                }
+            if ($request->tipo === 'salida' && $inventario->cantidad < $request->cantidad) {
+                DB::rollBack();
+                return back()->withErrors(['error' => 'Stock insuficiente en este almacén para realizar esta salida.']);
             }
+
+            // Aplicar el nuevo cambio en el inventario
+            if ($request->tipo === 'entrada') {
+                $inventario->cantidad += $request->cantidad;
+            } else {
+                $inventario->cantidad -= $request->cantidad;
+            }
+            $inventario->save();
 
             // Actualizar el movimiento de stock
             $stock->update([
@@ -134,15 +151,28 @@ class StockController extends Controller
             return back()->withErrors(['error' => $e->getMessage()]);
         }
     }
-    
+
     public function destroy(string $id)
     {
         DB::beginTransaction();
         try {
             $stock = Stock::findOrFail($id);
             $producto = Producto::findOrFail($stock->producto_id);
+            $almacen = Almacen::findOrFail($stock->almacen_id);
 
-            // Ajustar la cantidad del producto
+            // Ajustar la cantidad del producto en el inventario del almacén
+            $inventario = InventarioAlmacenes::where('producto_id', $producto->id)
+                ->where('almacen_id', $almacen->id)
+                ->firstOrFail();
+
+            if ($stock->tipo === 'entrada') {
+                $inventario->cantidad -= $stock->cantidad;
+            } else {
+                $inventario->cantidad += $stock->cantidad;
+            }
+            $inventario->save();
+
+            // Ajustar la cantidad total del producto
             $producto->cantidad -= $stock->tipo === 'entrada' ? $stock->cantidad : -$stock->cantidad;
             $producto->save();
 

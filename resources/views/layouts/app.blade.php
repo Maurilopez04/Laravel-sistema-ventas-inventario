@@ -64,9 +64,10 @@
                         <li><a href="{{ route('productos.index') }}" class="block py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Productos</a></li>
                         <li><a href="{{ route('clientes.index') }}" class="block py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Clientes</a></li>
                         <li><a href="{{ route('proveedores.index') }}" class="block py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Proveedores</a></li>
+                        <li><a href="{{ route('almacenes.index') }}" class="block py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Almacenes</a></li>
                     </ul>
 
-                    <li><a href="{{ route('stock.index') }}" class="block py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Stock</a></li>
+                    <li><a href="{{ route('stocks.index') }}" class="block py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Stock</a></li>
 
                     <!-- Subgrupo: Reportes -->
                     <li @click="reportesOpen = !reportesOpen" class="cursor-pointer py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700 flex justify-between">

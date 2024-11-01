@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlmacenController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
@@ -34,6 +35,10 @@ Route::resource('clientes', ClienteController::class)
 Route::resource('proveedores', ProveedorController::class)
 ->middleware(['auth']);
 
-Route::resource('stock', StockController::class)
+Route::resource('almacenes', AlmacenController::class)
 ->middleware(['auth']);
+
+Route::resource('stocks', StockController::class)
+->middleware(['auth']);
+
 require __DIR__.'/auth.php';
