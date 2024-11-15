@@ -4,7 +4,15 @@
             {{ __('Movimientos de Stock') }}
         </h2>
     </x-slot>
-
+    <!-- Error -->
+    @if(session('errorr'))
+        <div class="bg-red-500 text-white p-4 rounded-md shadow-lg flex items-center"> 
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8.257 3.099c.366-.446 1.075-.546 1.541-.216C10.63 3.279 11 3.85 11 4.5v6l3.707 3.707a1 1 0 01-1.414 1.414l-4-4a1 1 0 01-.293-.707V4.5c0-.648.37-1.219.902-1.415a1.007 1.007 0 01.648 0zM7 17a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+            </svg>
+            <span>{{ session('errorr') }}</span>
+        </div>
+    @endif
     <div class="">
         <div class="flex justify-center sm:justify-end items-center mx-10 my-2">
             <a href="{{ route('stocks.create') }}" class="btn-action bg-green-700"> Nuevo movimiento</a>
@@ -34,8 +42,6 @@
                                     <td class="px-6 py-4">{{ ucfirst($stock->tipo) }}</td>
                                     <td class="px-6 py-4">{{ $stock->almacen->nombre }}</td>
                                     <td class="px-6 py-4 flex justify-center items-center space-x-2">
-                                        <a href="{{ route('stocks.show', $stock->id) }}" class="btn-action bg-blue-700">Ver</a>
-                                        <a href="{{ route('stocks.edit', $stock->id) }}" class="btn-action bg-yellow-500">Editar</a>
                                         <form action="{{ route('stocks.destroy', $stock->id) }}" method="post" class="inline">
                                             @csrf
                                             @method('delete')
@@ -60,8 +66,6 @@
                                 <p class="text-gray-500 dark:text-gray-400">Tipo: {{ ucfirst($stock->tipo) }}</p>
                                 <p class="text-gray-500 dark:text-gray-400">Almacén: {{ $stock->almacen->nombre }}</p>
                                 <div class="flex justify-around mt-4 space-x-2">
-                                    <a href="{{ route('stocks.show', $stock->id) }}" class="btn-action bg-blue-700">Ver</a>
-                                    <a href="{{ route('stocks.edit', $stock->id) }}" class="btn-action bg-yellow-500">Editar</a>
                                     <form action="{{ route('stocks.destroy', $stock->id) }}" method="post" class="inline">
                                         @csrf
                                         @method('delete')

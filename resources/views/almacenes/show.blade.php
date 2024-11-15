@@ -20,7 +20,6 @@
                             <tr>
                                 <th scope="col" class="px-6 py-3">Producto</th>
                                 <th scope="col" class="px-6 py-3">Cantidad</th>
-                                <th scope="col" class="px-6 py-3">Tipo</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -30,7 +29,6 @@
                                     {{ $stock->producto->nombre }}
                                 </td>
                                 <td class="px-6 py-4">{{ $stock->cantidad }}</td>
-                                <td class="px-6 py-4">{{ ucfirst($stock->tipo) }}</td>
                             </tr>
                             @empty
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">

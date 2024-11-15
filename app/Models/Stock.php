@@ -11,7 +11,7 @@ class Stock extends Model
 
     protected $table = 'stocks';
 
-    protected $fillable = ['producto_id', 'tipo', 'cantidad'];
+    protected $fillable = ['producto_id', 'tipo', 'cantidad', 'almacen_id'];
 
     public function producto()
     {

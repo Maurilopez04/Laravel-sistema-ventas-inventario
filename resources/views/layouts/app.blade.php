@@ -145,11 +145,14 @@
             </header>
 
             <!-- Contenido de la Página -->
-             <!-- Toast Notifications -->
+<!-- Toast Notifications -->
 <div id="toast-container" class="fixed top-5 right-5 space-y-4 z-50">
     <!-- Éxito -->
     @if(session('success'))
-        <div class="toast bg-green-500 text-white p-4 rounded-md shadow-lg flex items-center" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 7000)">
+        <div class="toast bg-green-500 text-white p-4 rounded-md shadow-lg flex items-center" 
+             x-data="{ show: true }" 
+             x-show="show" 
+             x-init="setTimeout(() => show = false, 7000)">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.707a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 10-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
             </svg>
@@ -159,7 +162,10 @@
 
     <!-- Error -->
     @if(session('error'))
-        <div class="toast bg-red-500 text-white p-4 rounded-md shadow-lg flex items-center" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 7000)">
+        <div class="toast bg-red-500 text-white p-4 rounded-md shadow-lg flex items-center" 
+             x-data="{ show: true }" 
+             x-show="show" 
+             x-init="setTimeout(() => show = false, 7000)">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M8.257 3.099c.366-.446 1.075-.546 1.541-.216C10.63 3.279 11 3.85 11 4.5v6l3.707 3.707a1 1 0 01-1.414 1.414l-4-4a1 1 0 01-.293-.707V4.5c0-.648.37-1.219.902-1.415a1.007 1.007 0 01.648 0zM7 17a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
             </svg>
@@ -167,6 +173,7 @@
         </div>
     @endif
 </div>
+
 
             <main class="flex-1 bg-gray-100 dark:bg-gray-900 m-1">
                 {{ $slot }}

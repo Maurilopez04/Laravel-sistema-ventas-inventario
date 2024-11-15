@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Almacen;
+use App\Models\InventarioAlmacenes;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -53,7 +54,8 @@ class AlmacenController extends Controller
     {
         DB::beginTransaction();
         try {
-            $stocks = Stock::with('producto')
+            $stocks = InventarioAlmacenes::with('producto')
+            ->where('cantidad', '>', 0)
                 ->where('almacen_id', $almacene->id)
                 ->get();
 

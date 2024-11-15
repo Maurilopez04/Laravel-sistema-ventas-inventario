@@ -39,6 +39,7 @@ Route::resource('almacenes', AlmacenController::class)
 ->middleware(['auth']);
 
 Route::resource('stocks', StockController::class)
-->middleware(['auth']);
+->middleware(['auth'])
+->only(['index', 'create', 'store', 'destroy']);
 
 require __DIR__.'/auth.php';
