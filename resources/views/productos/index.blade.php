@@ -72,11 +72,11 @@
                                     <td class="px-2 border border-gray-400 py-4 flex justify-center items-center space-x-2">
                                         <a href="{{ route('productos.show', $producto->id) }}" class="btn-action bg-blue-700">Ver</a>
                                         <a href="{{ route('productos.edit', $producto->id) }}" class="btn-action bg-yellow-500">Editar</a>
-                                        <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="inline">
+                                        <?php  /*  <!--form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn-action bg-red-700">Eliminar</button>
-                                        </form>
+                                        </form--> */?>
                                     </td>
                                 </tr>
                             @empty
@@ -100,11 +100,12 @@
                                 <div class="flex justify-around mt-4 space-x-2">
                                     <a href="{{ route('productos.show', $producto->id) }}" class="btn-action bg-blue-700">Ver</a>
                                     <a href="{{ route('productos.edit', $producto->id) }}" class="btn-action bg-yellow-500">Editar</a>
-                                    <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="inline">
+                                 <?php  /* <!--form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn-action bg-red-700">Eliminar</button>
-                                    </form>
+                                    </form-->
+                                    */?>
                                 </div>
                             </div>
                         @empty

@@ -29,6 +29,7 @@
                                     <th scope="col" class="px-6 py-3">Cantidad</th>
                                     <th scope="col" class="px-6 py-3">Tipo</th>
                                     <th scope="col" class="px-6 py-3">Almacén</th>
+                                    <th scope="col" class="px-6 py-3">Fecha</th>
                                     <th scope="col" class="px-6 py-3">Acciones</th>
                                 </tr>
                             </thead>
@@ -41,6 +42,7 @@
                                     <td class="px-6 py-4">{{ $stock->cantidad }}</td>
                                     <td class="px-6 py-4">{{ ucfirst($stock->tipo) }}</td>
                                     <td class="px-6 py-4">{{ $stock->almacen->nombre }}</td>
+                                    <td class="px-6 py-4">{{ $stock->created_at->format('d/m/Y H:i') }}</td>
                                     <td class="px-6 py-4 flex justify-center items-center space-x-2">
                                         <form action="{{ route('stocks.destroy', $stock->id) }}" method="post" class="inline">
                                             @csrf

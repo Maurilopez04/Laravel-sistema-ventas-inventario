@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use App\Models\Categoria;
+use App\Models\InventarioAlmacenes;
 use App\Models\Marca;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -78,9 +79,26 @@ class ProductoController extends Controller
 
     public function show($id)
     {
-        $producto = Producto::with(['categoria', 'marca'])->findOrFail($id);
-        return view('productos.show', compact('producto'));
+        DB::beginTransaction();
+        try {
+            // Obtiene el producto con su categoría, marca y el stock en cada almacén
+            $producto = Producto::with(['categoria', 'marca'])
+                ->findOrFail($id);
+    
+            $stocks = InventarioAlmacenes::with('almacen')
+                ->where('producto_id', $id)
+                ->where('cantidad', '>', 0)
+                ->get();
+    
+            DB::commit();
+    
+            return view('productos.show', compact('producto', 'stocks'));
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Error al cargar los detalles del producto: ' . $e->getMessage()]);
+        }
     }
+    
 
     public function edit($id)
     {
@@ -145,5 +163,11 @@ class ProductoController extends Controller
             Log::error('Error al eliminar producto: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Error al eliminar el producto.']);
             }
+    }
+
+    public function restore($id){
+        $productos = Producto::withTrashed()->find($id);
+        $productos->restore();
+        return redirect()->route('productos.index')->with('success', 'Producto restaurado exitosamente');
     }
 }

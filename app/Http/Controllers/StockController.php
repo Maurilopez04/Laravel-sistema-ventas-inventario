@@ -15,6 +15,7 @@ class StockController extends Controller
     {
         $search = $request->input('search');
         $perPage = $request->input('perPage', 25);
+    
         $stocks = Stock::with(['producto', 'almacen'])
             ->when($search, function ($query, $search) {
                 return $query->where('tipo', 'like', '%' . $search . '%')
@@ -29,7 +30,9 @@ class StockController extends Controller
                           ->orWhere('ubicacion', 'like', "%{$search}%");
                     });
             })
+            ->orderBy('created_at', 'desc') // Ordenar por fecha más reciente
             ->paginate($perPage);
+    
         return view('stocks.index', compact('stocks'));
     }
 

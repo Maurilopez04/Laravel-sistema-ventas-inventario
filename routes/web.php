@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlmacenController;
+use App\Http\Controllers\CajaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
@@ -27,7 +28,8 @@ Route::resource('marcas', MarcaController::class)
 ->middleware(['auth']);
 
 Route::resource('productos', ProductoController::class)
-->middleware(['auth']);
+->middleware(['auth'])
+->only(['index', 'show', 'create', 'store', 'edit', 'update']);
 
 Route::resource('clientes', ClienteController::class)
 ->middleware(['auth']);
@@ -41,5 +43,8 @@ Route::resource('almacenes', AlmacenController::class)
 Route::resource('stocks', StockController::class)
 ->middleware(['auth'])
 ->only(['index', 'create', 'store', 'destroy']);
+
+Route::resource('cajas', CajaController::class)
+->middleware(['auth']);
 
 require __DIR__.'/auth.php';

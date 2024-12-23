@@ -38,7 +38,7 @@
 
     </head>
     <body class="font-sans antialiased bg-gray-100 dark:bg-gray-900">
-    <div x-data="{ sidebarOpen: false, reportesOpen: false, adminOpen: false }" class="flex h-screen">
+    <div x-data="{ sidebarOpen: false, reportesOpen: false, adminOpen: true }" class="flex h-screen">
         
         <!-- Sidebar para dispositivos grandes -->
         <aside class="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow-md z-20 hidden md:block">
@@ -65,6 +65,7 @@
                         <li><a href="{{ route('clientes.index') }}" class="block py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Clientes</a></li>
                         <li><a href="{{ route('proveedores.index') }}" class="block py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Proveedores</a></li>
                         <li><a href="{{ route('almacenes.index') }}" class="block py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Almacenes</a></li>
+                        <li><a href="{{ route('cajas.index') }}" class="block py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Cajas</a></li>
                     </ul>
 
                     <li><a href="{{ route('stocks.index') }}" class="block py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Stock</a></li>
